@@ -39,7 +39,7 @@ public class WeatherActivity extends AppCompatActivity implements WeatherService
         dialog.setMessage("Loading...");
         dialog.show();
 
-        service.refreshWeather("Sydney, Australia");
+        service.refreshWeather("Charlotte, NC");
 
     }
 
@@ -49,7 +49,7 @@ public class WeatherActivity extends AppCompatActivity implements WeatherService
 
         Item item = channel.getItem();
 
-        int resourceID = getResources().getIdentifier(("drawable/icon_" + item.getCondition().getCode(), null, getPackageName()));
+        int resourceID = getResources().getIdentifier(("drawable/icon_" + item.getCondition().getCode()), null, getPackageName());
 
         @SuppressWarnings("deprecation")
         Drawable weatherIconDrawable = getResources().getDrawable(resourceID);

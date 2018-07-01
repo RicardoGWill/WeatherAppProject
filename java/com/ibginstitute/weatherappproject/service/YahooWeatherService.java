@@ -3,6 +3,8 @@ package com.ibginstitute.weatherappproject.service;
 import android.net.Uri;
 import android.os.AsyncTask;
 
+import com.ibginstitute.weatherappproject.data.Channel;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -25,9 +27,10 @@ public class YahooWeatherService {
         return location;
     }
 
-    public void refreshWeather(String l) {
-        this.location = l;
-        new AsyncTask() {
+    public void refreshWeather(final String location) {
+        this.location = location;
+
+        new AsyncTask<String, Void, String>() {
             @Override
             protected String doInBackground(String... strings) {
 
@@ -38,11 +41,11 @@ public class YahooWeatherService {
                 try {
                     URL url = new URL(endpoint);
 
-                    URLConnection connection = url.openConnection()
+                    URLConnection connection = url.openConnection();
 
                     InputStream inputStream = connection.getInputStream();
 
-                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
                     StringBuilder result = new StringBuilder();
                     String line;
                     while ((line = reader.readLine()) != null) {
@@ -90,11 +93,11 @@ public class YahooWeatherService {
                 }
             }
 
-        }.execute(location)
+        }.execute(location);
     }
 
-    public class LocationWeatherException extends Exception {
-        public LocationWeatherException(String message) {
+    private class LocationWeatherException extends Exception {
+        public LocationWeatherException(String detailMessage) {
             super(detailMessage);
         }
     }
