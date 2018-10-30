@@ -4,6 +4,9 @@ import android.app.ProgressDialog;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,6 +23,10 @@ public class WeatherActivity extends AppCompatActivity implements WeatherService
     private TextView conditionTextView;
     private TextView locationTextView;
 
+    private EditText enterLocationEditText;
+    private Button findWeatherButton;
+    private String locationString;
+
     private YahooWeatherService service;
     private ProgressDialog dialog;
 
@@ -34,12 +41,24 @@ public class WeatherActivity extends AppCompatActivity implements WeatherService
         conditionTextView = (TextView)findViewById(R.id.conditionTextView);
         locationTextView = (TextView)findViewById(R.id.locationTextView);
 
+        enterLocationEditText = findViewById(R.id.enter_location_editText);
+        findWeatherButton = findViewById(R.id.find_weather_button);
+
         service = new YahooWeatherService(this);
         dialog = new ProgressDialog(this);
         dialog.setMessage("Loading...");
         dialog.show();
 
         service.refreshWeather("Charlotte, NC");
+
+        // This button press takes the EditText that the user entered and searches for the weather from that place.
+        findWeatherButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                locationString = enterLocationEditText.getText().toString();
+                service.refreshWeather(locationString);
+            }
+        });
 
     }
 
